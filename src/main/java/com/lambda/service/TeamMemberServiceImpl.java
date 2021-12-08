@@ -1,11 +1,20 @@
 package com.lambda.service;
 
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import com.lambda.model.Position;
 import com.lambda.model.TeamMember;
 import com.lambda.model.TeamMemberMapper;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -16,22 +25,37 @@ public class TeamMemberServiceImpl {
     private List<TeamMemberMapper> teamMemberMapperList = new ArrayList<>();
 
     private void init() {
-        TeamMember teamMember1 = new TeamMember("Luka", 8.5f, 8, Position.DEVELOPER);
-        TeamMember teamMember2 = new TeamMember("Andrew", 8.5f, 8, Position.DEVELOPER);
-        TeamMember teamMember3 = new TeamMember("Diana", 7.3f, 8, Position.DEVELOPER);
-        TeamMember teamMember4 = new TeamMember("James", 8.3f, 6, Position.TESTER);
-        TeamMember teamMember5 = new TeamMember("Robert", 6.3f, 8, Position.TESTER);
-        TeamMember teamMember6 = new TeamMember("Patricia", 9.3f, 8, Position.SCRUM_MASTER);
-        TeamMember teamMember7 = new TeamMember("Jennifer", 8.7f, 8, Position.SCRUM_MASTER);
+        readDataFromFile();
+    }
 
-        teamMemberList.add(teamMember1);
-        teamMemberList.add(teamMember2);
-        teamMemberList.add(teamMember3);
-        teamMemberList.add(teamMember4);
-        teamMemberList.add(teamMember5);
-        teamMemberList.add(teamMember6);
-        teamMemberList.add(teamMember7);
+    private void readDataFromFile(){
+        JSONParser jsonParser = new JSONParser();
 
+        try (FileReader reader = new FileReader("members.json"))
+        {
+            //Read JSON file
+            Object object = jsonParser.parse(reader);
+            JSONArray teamMembersArray = (JSONArray) object;
+            System.out.println(teamMembersArray);
+
+            mapJsonArrayToObjectList(teamMembersArray);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public void mapJsonArrayToObjectList(JSONArray jsonArray){
+        ObjectMapper mapper = new ObjectMapper();
+        try{
+            teamMemberList = mapper.readValue(jsonArray.toString(),new TypeReference<List<TeamMember>>(){});
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void processTeamMemberList() {

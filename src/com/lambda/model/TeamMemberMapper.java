@@ -1,7 +1,9 @@
 package com.lambda.model;
 
+import java.util.List;
+
 public class TeamMemberMapper {
-    private String name;
+    private List<String> names;
     private Position position;
     private float maxIncome;
     private float totalIncome;
@@ -9,19 +11,19 @@ public class TeamMemberMapper {
     public TeamMemberMapper() {
     }
 
-    public TeamMemberMapper(String name, Position position, float maxIncome, float totalIncome) {
-        this.name = name;
+    public TeamMemberMapper(List<String> names, Position position, float maxIncome, float totalIncome) {
+        this.names = names;
         this.position = position;
         this.maxIncome = maxIncome;
         this.totalIncome = totalIncome;
     }
 
-    public String getName() {
-        return name;
+    public List<String> getNames() {
+        return names;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setNames(List<String> names) {
+        this.names = names;
     }
 
     public Position getPosition() {
@@ -46,5 +48,14 @@ public class TeamMemberMapper {
 
     public void setTotalIncome(float totalIncome) {
         this.totalIncome = totalIncome;
+    }
+
+    @Override
+    public String toString() {
+        return "Position: " + position +
+                "\n" +
+                "Names of persons: " + names +
+                ", max income: " + maxIncome +
+                ", total income: " + totalIncome + "\n";
     }
 }

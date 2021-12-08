@@ -8,6 +8,7 @@ public class TeamMember {
 
     public TeamMember() {
     }
+
     public TeamMember(String name, float salaryPerHour, int workedHours, Position position) {
         this.name = name;
         this.salaryPerHour = salaryPerHour;
